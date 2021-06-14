@@ -11,7 +11,10 @@ const play = function() {
     if (chunk.toString('utf8').length >= 4) {
       fetch(`${config.API_ENDPOINT}?q=${chunk}`)
         .then(response => response.json())
-        .then(data => bookList.push(data.items.slice(0, 5)));
+        .then(data => bookList.push(data.items.slice(0, 5)))
+        .catch(err => {
+          console.error(err);
+        });
       searchResult(chunk);
     } else {
       if (chunk.toString('utf8') >= 6 || chunk.toString('utf8') <= 0) {
@@ -23,8 +26,7 @@ const play = function() {
   });
 };
 
-const searchResult = function(chunk) {
-  console.log('Nice! Here are some books about ' + chunk);
+const searchAPI = function(chunk) {
   fetch(`${config.API_ENDPOINT}?q=${chunk}`)
     .then(response => response.json())
     .then(data => (data.items).slice(0, 5).forEach((books, i) => {
@@ -33,6 +35,11 @@ const searchResult = function(chunk) {
     .catch(err => {
       console.error(err);
     });
+};
+
+const searchResult = function(chunk) {
+  console.log('Nice! Here are some books about ' + chunk);
+  searchAPI(chunk);
   addReadingList();
 };
 
