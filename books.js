@@ -12,6 +12,7 @@ const play = function() {
   //This line allows user to enter their search term, and also sets the stage for when input will later be used to select a book. Data will be parsed based on length to determine which feature is being used.
   process.openStdin().on('data', function(chunk) {
     //Buffered chunks of one character (1, 2, 3, 4, or 5) show a length of 3. Buffered chunks of two or more characters denote a search term and technically show a length of 4.
+    //Chunks are translated from objects to strings so that their length can be read.
     if (chunk.toString('utf8').length >= 4) {
       fetch(`${config.API_ENDPOINT}?q=${chunk}`)
         .then(response => response.json())
@@ -61,7 +62,7 @@ const displayReadingList = function(chunk) {
   console.log('Good choice! You chose to add book number ' + chunk + 'Your reading list so far:');
   let bookIndex = chunk - 1;
   let books = bookList[0];
-  //Formats reading list books to show identical to how they were displayed from the fetch statement at line 38 and collects them in readingList array.
+  //Formats reading list books to show identical to how they were displayed from the fetch statement at line 39 and collects them in readingList array.
   readingList.push(books[bookIndex]['volumeInfo']['title'] + ' by ' + books[bookIndex]['volumeInfo']['authors'] + ', published by ' + books[bookIndex]['volumeInfo']['publisher']);
   console.log(readingList);
   //Resets bookList array to empty for a new search to be handled.
