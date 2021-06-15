@@ -71,3 +71,5 @@ const displayReadingList = function(chunk) {
 };
 
 play();
+
+export { play, addReadingList, displayReadingList, searchAPI, searchResult };
